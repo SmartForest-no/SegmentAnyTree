@@ -1,0 +1,37 @@
+defaults: 
+  - visualization: eval
+
+num_workers: 0
+batch_size: 1
+cuda: 0
+weight_name: "latest" # Used during resume, select with model to load from [miou, macc, acc..., latest]
+enable_cudnn: True
+#TO ADAPT
+#checkpoint_dir specifies path to the directory where the trained model (that should be used for evaluation) and the used configurations are saved,
+#e.g. /path/to/project/PanopticSegForLargeScalePointCloud/outputs/treeins_my_first_run/treeins_my_first_run-PointGroup-PAPER-20230705_215106"
+# checkpoint_dir: "/path/to/project/PanopticSegForLargeScalePointCloud/outputs/treeins_my_first_run/treeins_my_first_run-PointGroup-PAPER-20230705_215106"
+checkpoint_dir: "/home/nibio/mutable-outside-world/outputs/mls_data_run/mls_data_run-PointGroup-PAPER-20230822_125139"
+
+model_name: PointGroup-PAPER
+precompute_multi_scale: True # Compute multiscate features on cpu for faster training / inference
+enable_dropout: False
+voting_runs: 1
+data: 
+  #TO ADAPT
+  #fold: list of .ply test file paths, e.g. ['/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/SCION/SCION_plot_31_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/SCION/SCION_plot_61_annotated_test.ply']
+  #fold: ["/path/to/project/PanopticSegForLargeScalePointCloud/data/npm3dfused/raw/Paris_test.ply"]
+  #fold: ["/path/to/project/PanopticSegForLargeScalePointCloud/data/npm3dfused/raw/Lille1_1_test.ply"]
+  #fold: ['/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/CULS/CULS_plot_2_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO/NIBIO_plot_1_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO/NIBIO_plot_17_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO/NIBIO_plot_18_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO/NIBIO_plot_22_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO/NIBIO_plot_23_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO/NIBIO_plot_5_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot1_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot10_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot15_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot27_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot3_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot32_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot34_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot35_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot48_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot49_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot52_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot53_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot58_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot6_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/NIBIO2/NIBIO2_plot60_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/RMIT/RMIT_test_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/SCION/SCION_plot_31_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/SCION/SCION_plot_61_annotated_test.ply', '/path/to/project/PanopticSegForLargeScalePointCloud/data/treeinsfused/raw/TUWIEN/TUWIEN_test_test.ply']
+  fold: ["/home/nibio/mutable-outside-world/processed_data_full/treeinsfused/raw/MLS/MLS_test_mls_1_test.ply"]
+
+
+tracker_options: # Extra options for the tracker
+  full_res: True
+  make_submission: True
+  ply_output: "maciej_eval.ply"
+
+hydra:
+  run:
+    dir: ${checkpoint_dir}/eval/${now:%Y-%m-%d_%H-%M-%S}
+
+

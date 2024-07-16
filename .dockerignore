@@ -1,0 +1,28 @@
+# add data folder
+/data_bucket/
+/data/
+/processed_data_full/
+/processed_data_ready_for_training/
+/processed_data_ready_for_training_sparse_1000/
+/processed_data_ready_for_training_sparse_1000_500_100_10/processed_0.2_test/
+/B_temp_folder/
+/sample_test_data/
+/small_data_for_test/
+# /processed_data_ready_for_training_sparse_1000_500_100_10/
+/outputs/from_gpu26/
+# !/outputs/from_gpu26/mls_data_run-PointGroup-PAPER-20230922_083127
+/bucket_in_folder/
+/bucket_out_folder/
+/docker_in_folder/
+/docker_out_folder/
+/for_instance_no_outer_sparse_many_times/
+/for_instance_no_outer_sparse/
+/maciek/
+/data_for_test_results_final/
+/data_for_test/
+/outputs/from_gpu26/mls_data_run-PointGroup-PAPER-20230922_083127/eval/
+/processed_data_ready_for_training_sparse_1000_500_100_10/treeinsfused/processed_0.2_test/
+/temp_folder/
+/helios_for_instance/
+/Stefano/
+
