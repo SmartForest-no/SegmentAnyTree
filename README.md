@@ -10,5 +10,8 @@ Please follow the command to train the model.
 
 In order to train the model you have to prepare the data. You can take a look at file : `sample_data_conversion.py` to check how it may be done. 
 
+## Frameworked used as a code base
+This framework was used https://github.com/torch-points3d/torch-points3d as the code base. So please take a look there for more information regarding the training and parametrization of the code.
+
 
 
