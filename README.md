@@ -2,7 +2,7 @@
 # SegmentAnyTree
 
 ## Inference
-Please take a look at the `run_inference.sh input_folder output_folder` how to run inference of the model. Input folder should contains las files for processing. Output folder contains results in `final_results` folder.
+For inference run `run_inference.sh input_folder output_folder`. `input_folder` folder should contains las files for processing. `output_folder` contains results in `final_results` subfolder.
 
 ## Training
 Please follow the command to train the model.
