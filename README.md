@@ -14,4 +14,6 @@ In order to train the model you have to prepare the data. You can take a look at
 This framework was used https://github.com/torch-points3d/torch-points3d as the code base. So please take a look there for more information regarding the training and parametrization of the code.
 
 
+## Issues
+Please provide problems with the code as issuses in this repo.
 
