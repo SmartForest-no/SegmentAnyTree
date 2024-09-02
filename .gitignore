@@ -167,6 +167,7 @@ cython_debug/
 # my 
 *.las
 *.pt
+!model_file/PointGroup-PAPER.pt
 *.ply
 *.__pycache__
 wandb/

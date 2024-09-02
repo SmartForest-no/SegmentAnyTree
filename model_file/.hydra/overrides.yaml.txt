@@ -1,0 +1,9 @@
+- task=panoptic
+- data=panoptic/treeins_rad8
+- models=panoptic/area4_ablation_3heads_5
+- model_name=PointGroup-PAPER
+- training=treeins
+- job_name=mls_data_run
+- data.dataroot=/home/nibio/mutable-outside-world/processed_data_ready_for_training_sparse_1000_500_100_10/
+- batch_size=6
+- epochs=100
