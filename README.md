@@ -7,7 +7,7 @@ This repo includes the code for training and inference for the method developed 
 Under the hood, SegmentAnyTree relies on the [torch-points3d framework](https://github.com/torch-points3d/torch-points3d) as the code base. So please take a look there for more information regarding the training and parametrization of the code.
 
 ## Usage
-The code has been tested on a Linux machine, ... and it relies on a docker image. The method has not been tested in a Windows environment and we do not plan on 
+The code has been tested on a Linux machine, ... and it relies on a docker image. The method has not been tested in a Windows environment and parts of the code (e.g. Minkowski Engine) might not be available for Windows.
 
 ### Using the docker image
 ...
