@@ -7,7 +7,7 @@ This repo includes the code for training and inference for the method developed 
 Under the hood, SegmentAnyTree relies on the [torch-points3d framework](https://github.com/torch-points3d/torch-points3d) as the code base. So please take a look there for more information regarding the training and parametrization of the code.
 
 ## Usage
-The code has been tested on a Linux machine, ... and it relies on a docker image. The method has not been tested in a Windows environment and parts of the code (e.g. Minkowski Engine) might not be available for Windows.
+The code has been tested on a Linux machine and it relies on a docker image. The method has not been tested in a Windows environment and parts of the code (e.g. Minkowski Engine) might not be available for Windows.
 
 ### Using the docker image
 In order to run code using docker container you should edit the content of `run_docker_locally.sh` file.  You should change the following lines:
@@ -27,7 +27,9 @@ and
 ```
  --mount type=bind,source=/home/nibio/mutable-outside-world/code/PanopticSegForLargeScalePointCloud_maciej/bucket_out_folder
 ```
-to match your folders where you keep your local point clound files (e.g. las) to be processed. 
+to match your folders where you keep your local point clound files (las, ply, laz or zip ) to be processed. 
+
+Once you introduce changes to `run_docker_locally.sh` file, you should run it: `bash run_docker_locally.sh` and expect the results in your output folder e.g. `/home/nibio/mutable-outside-world/code/PanopticSegForLargeScalePointCloud_maciej/bucket_out_folder`.
 
 
 ## Inference
