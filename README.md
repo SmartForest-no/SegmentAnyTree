@@ -19,6 +19,17 @@ docker run -it --gpus all \
     $IMAGE_NAME
 ```
 
+You should change the mounting folders : 
+```
+ --mount type=bind,source=/home/nibio/mutable-outside-world/code/PanopticSegForLargeScalePointCloud_maciej/bucket_in_folder
+```
+and 
+```
+ --mount type=bind,source=/home/nibio/mutable-outside-world/code/PanopticSegForLargeScalePointCloud_maciej/bucket_out_folder
+```
+to match your folders where you keep your local point clound files (e.g. las) to be processed. 
+
+
 ## Inference
 For inference run `run_inference.sh input_folder output_folder`. `input_folder` folder should contains las files for processing. `output_folder` contains results in `final_results` subfolder.
 
