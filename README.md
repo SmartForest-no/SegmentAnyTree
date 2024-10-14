@@ -10,7 +10,14 @@ Under the hood, SegmentAnyTree relies on the [torch-points3d framework](https://
 The code has been tested on a Linux machine, ... and it relies on a docker image. The method has not been tested in a Windows environment and parts of the code (e.g. Minkowski Engine) might not be available for Windows.
 
 ### Using the docker image
-...
+In order to run code using docker container you should edit the content of `run_docker_locally.sh` file.  You should change the following lines:
+```
+docker run -it --gpus all \
+    --name $CONTAINER_NAME \
+    --mount type=bind,source=/home/nibio/mutable-outside-world/code/PanopticSegForLargeScalePointCloud_maciej/bucket_in_folder,target=/home/nibio/mutable-outside-world/bucket_in_folder \
+    --mount type=bind,source=/home/nibio/mutable-outside-world/code/PanopticSegForLargeScalePointCloud_maciej/bucket_out_folder,target=/home/nibio/mutable-outside-world/bucket_out_folder \
+    $IMAGE_NAME
+```
 
 ## Inference
 For inference run `run_inference.sh input_folder output_folder`. `input_folder` folder should contains las files for processing. `output_folder` contains results in `final_results` subfolder.
