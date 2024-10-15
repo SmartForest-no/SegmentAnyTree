@@ -33,9 +33,8 @@ Once you introduce changes to `run_docker_locally.sh` file, you should run it: `
 
 
 ## Inference
-For inference run `run_inference.sh input_folder output_folder`. `input_folder` folder should contains las files for processing. `output_folder` contains results in `final_results` subfolder.
-
-This manual explains how to use the inference script to process data and manage the output. Follow the steps below for successful execution.
+This section explains how to use the inference script to process data and manage the output. This is to be used if you do not run using docker container.
+Follow the steps below for successful execution. 
 
 ### Steps to Use the Script
 
@@ -89,10 +88,6 @@ This manual explains how to use the inference script to process data and manage 
    num_files=$(find "$FINAL_DEST_DIR" -maxdepth 1 -type f | wc -l)
    echo "Number of files in the final results directory: $num_files"
    ```
-
-### Conclusion
-This script automates the entire inference workflow, from input data preparation to final result generation. Simply provide the input and output directories, and let the script handle the rest.
-
 
 
 
