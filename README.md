@@ -84,11 +84,7 @@ Follow the steps below for successful execution.
 
 8. **Post-Processing and Results**:
    - After inference, the script processes and renames output files, stores them in a `final_results` folder, and counts the number of result files generated:
-   ```bash
-   num_files=$(find "$FINAL_DEST_DIR" -maxdepth 1 -type f | wc -l)
-   echo "Number of files in the final results directory: $num_files"
-   ```
-
+ 
 
 
 ## Training
