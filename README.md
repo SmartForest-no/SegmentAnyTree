@@ -33,7 +33,7 @@ Once you introduce changes to `run_docker_locally.sh` file, you should run it: `
 
 
 ## Inference
-This section explains how to use the inference script to process data and manage the output. This is to be used if you do not run using docker container.
+This section explains how to use the inference script (`run_inference.sh`) to process data and manage the output. This is to be used if you do not run using docker container.
 Follow the steps below for successful execution. 
 
 ### Steps to Use the Script
