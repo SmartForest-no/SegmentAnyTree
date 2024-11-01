@@ -1,5 +1,4 @@
 FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu20.04 as builder
-# FROM nvidia/cuda:10.2-devel-ubuntu18.04
 
 RUN ln -fs /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -49,8 +48,7 @@ RUN python3.8 -m pip install --no-cache-dir --upgrade \
     wheel==0.37.0
 
 ENV CU_VERSION=cu111
-# 8.0 for BM.GPU4.8, 7.0 for local, 6.0 for P100-SXM2 (Oracle)
-ENV TORCH_CUDA_ARCH_LIST_VER="6.0+PTX" 
+ENV TORCH_CUDA_ARCH_LIST_VER="6.0+PTX"
 
 RUN python3.8 -m pip install --no-cache-dir \
     torch==1.9.0+${CU_VERSION} \
@@ -73,8 +71,7 @@ RUN TORCH_CUDA_ARCH_LIST=${TORCH_CUDA_ARCH_LIST_VER} python3.8 -m pip install --
 RUN TORCH_CUDA_ARCH_LIST=${TORCH_CUDA_ARCH_LIST_VER} FORCE_CUDA=1 python3.8 -m pip install --no-cache-dir \
     git+https://github.com/mit-han-lab/torchsparse.git@v1.4.0
 
-                                              
-# torch-points3d requirements
+# Install torch-points3d requirements and fixed dependencies
 RUN TORCH_CUDA_ARCH_LIST=${TORCH_CUDA_ARCH_LIST_VER} FORCE_CUDA=1 python3.8 -m pip install --no-cache-dir \
     torch-points-kernels==0.7.0 \
     absl-py==0.14.0 \
@@ -212,15 +209,13 @@ RUN TORCH_CUDA_ARCH_LIST=${TORCH_CUDA_ARCH_LIST_VER} FORCE_CUDA=1 python3.8 -m p
     websocket-client==1.2.1 \
     werkzeug==2.0.1 \
     widgetsnbextension==3.5.1 \
-    zipp==3.5.0 
-    # hdbscan==0.8.29
+    zipp==3.5.0
 
-
-# Download, unzip, and install hdbscan
-RUN wget https://github.com/scikit-learn-contrib/hdbscan/archive/master.zip && \
-    unzip master.zip && \
-    rm master.zip && \
-    cd hdbscan-master && \
+RUN python3.8 -m pip install cython==0.29.37
+RUN wget https://github.com/scikit-learn-contrib/hdbscan/archive/refs/tags/0.8.29.zip && \
+    unzip 0.8.29.zip && \
+    rm 0.8.29.zip && \
+    cd hdbscan-0.8.29 && \
     python3.8 -m pip install -r requirements.txt && \
     python3.8 setup.py install
 
@@ -234,21 +229,15 @@ RUN apt-get clean && \
       \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
     \) -exec rm -rf '{}' + ;
 
-
 # Stage 2: Final stage
 FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu20.04 AS final
 
-# Set timezone
 RUN ln -fs /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 
-# Copy only necessary files and packages from the builder stage
-# Only copy necessary files from the builder stage
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
 COPY --from=builder /usr/local/include /usr/local/include
 
-
-# Install Python and other essential packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libopenblas-base \
     python3.8 \
@@ -257,10 +246,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     unzip \
     zip \
-    # ... (any other packages that are required at runtime) ...
     && rm -rf /var/lib/apt/lists/*
-
-
 
 RUN python3.8 -m pip install --no-cache-dir \
     numba==0.57.1 \
@@ -269,12 +255,9 @@ RUN python3.8 -m pip install --no-cache-dir \
     dask==2021.8.1 \
     pykdtree==1.3.7.post0
 
-# make sure that datascience folder exists (to be used in the oracle)
 RUN mkdir -p /home/datascience
 
-# default config
 COPY . /home/nibio/mutable-outside-world
 WORKDIR /home/nibio/mutable-outside-world
 
-# run training
 ENTRYPOINT ["bash", "run_oracle_pipeline.sh"]
