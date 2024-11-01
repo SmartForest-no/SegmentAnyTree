@@ -2,8 +2,8 @@
 set -e
 
 # Set DEBUG_MODE (change this to true or false as needed, DEBUG is for local testing, false is for running on the oracle)
-# DEBUG_MODE=true
-DEBUG_MODE=false
+DEBUG_MODE=true
+# DEBUG_MODE=false
 
 # Set the path (change this to the path taken from the config file)
 # if [ "$DEBUG_MODE" = true ]; then
