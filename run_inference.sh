@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-export PYTHONPATH="$SOURCE_DIR"
-
 # Provide path to the input and output directories and also information if to clean the output directory from command line
 SOURCE_DIR="$1"
 DEST_DIR="$2"
@@ -33,9 +31,14 @@ if [[ "$DEST_DIR" != /* ]]; then
     DEST_DIR=$(pwd)/"$DEST_DIR"
 fi
 
+# Set the script directory and add it to the PYTHONPATH
+SCRIPT_DIR="/home/nibio/mutable-outside-world"
+export PYTHONPATH="$SCRIPT_DIR:$PYTHONPATH"
+
 # Print the input and output directories
 echo "Input directory: $SOURCE_DIR"
 echo "Output directory: $DEST_DIR"
+echo "Script directory: $SCRIPT_DIR"
 
 # Rename the input files to the format that the inference script expects 
 # Change '-' to '_' in the file names
@@ -44,17 +47,17 @@ echo "Output directory: $DEST_DIR"
 mkdir -p "$DEST_DIR/input_data"
 cp -r "$SOURCE_DIR/"* "$DEST_DIR/input_data/"
 
-python3 "$SOURCE_DIR/nibio_inference/fix_naming_of_input_files.py" "$DEST_DIR/input_data"
+python3 "$SCRIPT_DIR/nibio_inference/fix_naming_of_input_files.py" "$DEST_DIR/input_data"
 
 # UTM normalization 
-python3 "$SOURCE_DIR/nibio_inference/pipeline_utm2local_parallel.py" -i "$DEST_DIR/input_data" -o "$DEST_DIR/utm2local"
+python3 "$SCRIPT_DIR/nibio_inference/pipeline_utm2local_parallel.py" -i "$DEST_DIR/input_data" -o "$DEST_DIR/utm2local"
 
 # Update the eval.yaml file with the correct paths
 cp "$SOURCE_DIR/conf/eval.yaml" "$DEST_DIR"
-python3 "$SOURCE_DIR/nibio_inference/modify_eval.py" "$DEST_DIR/eval.yaml" "$DEST_DIR/utm2local" "$DEST_DIR"
+python3 "$SCRIPT_DIR/nibio_inference/modify_eval.py" "$DEST_DIR/eval.yaml" "$DEST_DIR/utm2local" "$DEST_DIR"
 
 # clear cache
-python3 "$SOURCE_DIR/nibio_inference/clear_cache.py" --eval_yaml "$DEST_DIR/eval.yaml"
+python3 "$SCRIPT_DIR/nibio_inference/clear_cache.py" --eval_yaml "$DEST_DIR/eval.yaml"
 
 # Run the inference script with the config file
 python3 eval.py --config-name "$DEST_DIR/eval.yaml"
@@ -62,15 +65,15 @@ python3 eval.py --config-name "$DEST_DIR/eval.yaml"
 echo "Done with inference using the config file: $DEST_DIR/eval.yaml"
 
 # Rename the output files result_0.ply , result_1.ply, ... to the original file names but with the prefix "inference_"
-python3 "$SOURCE_DIR/nibio_inference/rename_result_files_instance.py" "$DEST_DIR/eval.yaml" "$DEST_DIR"
+python3 "$SCRIPT_DIR/nibio_inference/rename_result_files_instance.py" "$DEST_DIR/eval.yaml" "$DEST_DIR"
 
 # Rename segmentation files
-python3 "$SOURCE_DIR/nibio_inference/rename_result_files_segmentation.py" "$DEST_DIR/eval.yaml" "$DEST_DIR"
+python3 "$SCRIPT_DIR/nibio_inference/rename_result_files_segmentation.py" "$DEST_DIR/eval.yaml" "$DEST_DIR"
 
 FINAL_DEST_DIR="$DEST_DIR/final_results"
 
 # Run merge script
-python3 "$SOURCE_DIR/nibio_inference/merge_pt_ss_is_in_folders.py" -i "$DEST_DIR/utm2local" -s "$DEST_DIR" -o "$FINAL_DEST_DIR" -v
+python3 "$SCRIPT_DIR/nibio_inference/merge_pt_ss_is_in_folders.py" -i "$DEST_DIR/utm2local" -s "$DEST_DIR" -o "$FINAL_DEST_DIR" -v
 
 # remove numbers in the beginning of the file names
 
