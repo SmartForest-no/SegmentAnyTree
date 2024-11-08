@@ -4,6 +4,6 @@
 - model_name=PointGroup-PAPER
 - training=treeins
 - job_name=mls_data_run
-- data.dataroot=/home/nibio/mutable-outside-world/processed_data_ready_for_training_sparse_1000_500_100_10/
+- data.dataroot=/home/datascience/tmp_out_folder/utm2local
 - batch_size=6
 - epochs=100
