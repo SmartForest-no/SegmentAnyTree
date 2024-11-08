@@ -109,6 +109,10 @@ def final_eval(pre_sem, pre_ins_embed, pre_ins_offset, gt_sem, gt_ins, output_fi
     stuff_classcount = [1]  # @Treeins
     # class index for semantic segmenatation
     sem_classcount = [1, 2]  # @Treeins
+    #class index for semantic classes with gt points
+    sem_classcount_have = []
+    stuff_classes = [1,2]
+    thing_classes = [3,4,5]
 
     # log directory
     # file_path = '/scratch2/torch-points3d/outputs/2021-10-20/06-19-43/eval/2021-10-26_14-27-55/'
@@ -519,6 +523,7 @@ class PanopticTreeinsBase:
     NUM_MAX_OBJECTS = 80  # @Treeins: increased int because we had more number of instances in data files from the Treeins data set
 
     STUFFCLASSES = torch.tensor([i for i in VALID_CLASS_IDS if i not in SemIDforInstance])
+    THINGCLASSES = torch.tensor([i for i in VALID_CLASS_IDS if i in SemIDforInstance])
     ID2CLASS = {SemforInsid: i for i, SemforInsid in enumerate(list(SemIDforInstance))}
 
     def __getitem__(self, idx):
@@ -548,6 +553,11 @@ class PanopticTreeinsBase:
     def stuff_classes(self):
         # return torch.tensor([0,1,5])
         return self._remap_labels(self.STUFFCLASSES)
+
+    @property
+    def thing_classes(self):
+        # return torch.tensor([0,1,5])
+        return self._remap_labels(self.THINGCLASSES)
 
 
 class PanopticTreeinsSphere(PanopticTreeinsBase, TreeinsSphere):
@@ -668,6 +678,17 @@ class TreeinsFusedDataset(BaseDataset):
             return self.train_dataset.stuff_classes
         else:
             return self.test_dataset[0].stuff_classes
+
+    @property  # type: ignore
+    @save_used_properties
+    def thing_classes(self):
+        """ Returns a list of classes that are not instances
+        """
+        # return self.train_dataset.thing_classes
+        if self.train_dataset:
+            return self.train_dataset.thing_classes
+        else:
+            return self.test_dataset[0].thing_classes
 
     @staticmethod
     def to_ply(pos, label, file):
