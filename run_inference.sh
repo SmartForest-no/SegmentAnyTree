@@ -53,7 +53,7 @@ python3 "$SCRIPT_DIR/nibio_inference/fix_naming_of_input_files.py" "$DEST_DIR/in
 python3 "$SCRIPT_DIR/nibio_inference/pipeline_utm2local_parallel.py" -i "$DEST_DIR/input_data" -o "$DEST_DIR/utm2local"
 
 # Update the eval.yaml file with the correct paths
-cp "$SOURCE_DIR/conf/eval.yaml" "$DEST_DIR"
+cp "$SCRIPT_DIR/conf/eval.yaml" "$DEST_DIR"
 python3 "$SCRIPT_DIR/nibio_inference/modify_eval.py" "$DEST_DIR/eval.yaml" "$DEST_DIR/utm2local" "$DEST_DIR"
 
 # clear cache
