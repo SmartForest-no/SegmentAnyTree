@@ -10,7 +10,7 @@ enable_cudnn: True
 #checkpoint_dir specifies path to the directory where the trained model (that should be used for evaluation) and the used configurations are saved,
 #e.g. /path/to/project/PanopticSegForLargeScalePointCloud/outputs/treeins_my_first_run/treeins_my_first_run-PointGroup-PAPER-20230705_215106"
 # checkpoint_dir: "/path/to/project/PanopticSegForLargeScalePointCloud/outputs/treeins_my_first_run/treeins_my_first_run-PointGroup-PAPER-20230705_215106"
-checkpoint_dir: "/home/nibio/mutable-outside-world/outputs/mls_data_run/mls_data_run-PointGroup-PAPER-20230822_125139"
+checkpoint_dir: "/home/nibio/mutable-outside-world/model_file"
 
 model_name: PointGroup-PAPER
 precompute_multi_scale: True # Compute multiscate features on cpu for faster training / inference
