@@ -54,7 +54,7 @@ def main():
     ply_paths = get_all_ply_paths(args.folder_path)
     if not ply_paths:
         print(f"No .ply files found in the directory: {args.folder_path}")
-        return
+        raise SystemExit  # Exit the program
 
     # Modify the YAML file
     modify_yaml(args.yaml_file_path, ply_paths, args.output_dir_path)
