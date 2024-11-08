@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
-export PYTHONPATH="$SOURCE_DIR"
+WORK_DIR='/home/nibio/mutable-outside-world'
+
+export PYTHONPATH=$WORK_DIR:$PYTHONPATH
 
 # Provide path to the input and output directories and also information if to clean the output directory from command line
 SOURCE_DIR="$1"
@@ -9,8 +11,8 @@ DEST_DIR="$2"
 CLEAN_OUTPUT_DIR="$3"
 
 # Set default values if not provided
-: "${SOURCE_DIR:=/home/nibio/mutable-outside-world/data_for_test}"
-: "${DEST_DIR:=/home/nibio/mutable-outside-world/data_for_test_results}"
+: "${SOURCE_DIR:=$WORK_DIR/data_for_test}"
+: "${DEST_DIR:=$WORK_DIR/data_for_test_results}"
 : "${CLEAN_OUTPUT_DIR:=true}"
 
 # If someone fails to provide this correctly then print the usage and exit
@@ -44,33 +46,48 @@ echo "Output directory: $DEST_DIR"
 mkdir -p "$DEST_DIR/input_data"
 cp -r "$SOURCE_DIR/"* "$DEST_DIR/input_data/"
 
-python3 "$SOURCE_DIR/nibio_inference/fix_naming_of_input_files.py" "$DEST_DIR/input_data"
+# copy model folder to the output directory
+#cp -r "$WORK_DIR/outputs/binbin/5_classes" "$DEST_DIR/model_folder"
 
-# UTM normalization 
-python3 "$SOURCE_DIR/nibio_inference/pipeline_utm2local_parallel.py" -i "$DEST_DIR/input_data" -o "$DEST_DIR/utm2local"
+# update folder path in the eval.yaml file
+#python3 "$WORK_DIR/nibio_inference/update_model_file_path.py" "$WORK_DIR/conf/eval.yaml" "$DEST_DIR/model_folder"
 
-# Update the eval.yaml file with the correct paths
-cp "$SOURCE_DIR/conf/eval.yaml" "$DEST_DIR"
-python3 "$SOURCE_DIR/nibio_inference/modify_eval.py" "$DEST_DIR/eval.yaml" "$DEST_DIR/utm2local" "$DEST_DIR"
-
+# Fix the naming of the input files
+python3 "$WORK_DIR/nibio_inference/fix_naming_of_input_files.py" "$DEST_DIR/input_data"
+#
+## UTM normalization 
+python3 "$WORK_DIR/nibio_inference/pipeline_utm2local_parallel.py" -i "$DEST_DIR/input_data" -o "$DEST_DIR/utm2local"
+#
+## Update the eval.yaml file with the correct paths
+cp "$WORK_DIR/conf/eval.yaml" "$DEST_DIR"
+python3 "$WORK_DIR/nibio_inference/modify_eval.py" "$DEST_DIR/eval.yaml" "$DEST_DIR/utm2local" "$DEST_DIR"
+#
 # clear cache
-python3 "$SOURCE_DIR/nibio_inference/clear_cache.py" --eval_yaml "$DEST_DIR/eval.yaml"
+python3 "$WORK_DIR/nibio_inference/clear_cache.py" --eval_yaml "$DEST_DIR/eval.yaml"
 
-# Run the inference script with the config file
+# # Run the inference script with the config file
 python3 eval.py --config-name "$DEST_DIR/eval.yaml"
+
+# Binbin tiling
+#bash large_PC_predict.sh "$DEST_DIR"
 
 echo "Done with inference using the config file: $DEST_DIR/eval.yaml"
 
-# Rename the output files result_0.ply , result_1.ply, ... to the original file names but with the prefix "inference_"
-python3 "$SOURCE_DIR/nibio_inference/rename_result_files_instance.py" "$DEST_DIR/eval.yaml" "$DEST_DIR"
+# # Rename the output files result_0.ply , result_1.ply, ... to the original file names but with the prefix "inference_"
+# python3 "$WORK_DIR/nibio_inference/rename_result_files_instance.py" "$DEST_DIR/eval.yaml" "$DEST_DIR"
 
-# Rename segmentation files
-python3 "$SOURCE_DIR/nibio_inference/rename_result_files_segmentation.py" "$DEST_DIR/eval.yaml" "$DEST_DIR"
+# # Rename segmentation files
+# python3 "$WORK_DIR/nibio_inference/rename_result_files_segmentation.py" "$DEST_DIR/eval.yaml" "$DEST_DIR"
 
 FINAL_DEST_DIR="$DEST_DIR/final_results"
 
-# Run merge script
-python3 "$SOURCE_DIR/nibio_inference/merge_pt_ss_is_in_folders.py" -i "$DEST_DIR/utm2local" -s "$DEST_DIR" -o "$FINAL_DEST_DIR" -v
+# # Run merge script
+# python3 "$WORK_DIR/nibio_inference/merge_pt_ss_is_in_folders.py" -i "$DEST_DIR/utm2local" -s "$DEST_DIR" -o "$FINAL_DEST_DIR" -v
+
+python3 "$WORK_DIR/nibio_inference/final_utm_integration_in_folders.py" -i "$DEST_DIR/utm2local" -s "$DEST_DIR" -o "$FINAL_DEST_DIR" -v
+
+# bring back to utm and save as laz (just mapping and no extending with original points)
+# python3 "$WORK_DIR/nibio_inference/prepare_final.py" -u "$DEST_DIR/utm2local" -i "$DEST_DIR" -o "$FINAL_DEST_DIR" -v
 
 # remove numbers in the beginning of the file names
 
