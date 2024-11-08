@@ -109,10 +109,6 @@ def final_eval(pre_sem, pre_ins_embed, pre_ins_offset, gt_sem, gt_ins, output_fi
     stuff_classcount = [1]  # @Treeins
     # class index for semantic segmenatation
     sem_classcount = [1, 2]  # @Treeins
-    #class index for semantic classes with gt points
-    sem_classcount_have = []
-    stuff_classes = [1,2]
-    thing_classes = [3,4,5]
 
     # log directory
     # file_path = '/scratch2/torch-points3d/outputs/2021-10-20/06-19-43/eval/2021-10-26_14-27-55/'
