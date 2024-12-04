@@ -120,6 +120,13 @@ class MergePtSsIs(object):
         # add 1 to PredInstance column
         merged_df['PredInstance'] = merged_df['PredInstance'] + 1
 
+        # Assign NaNs in PredInstance to 0. This is because the instance segmentation
+        # may not have been able to assign an instance ID to every point, so after the
+        # outer join, it is possible to have missing values in PredInstance. This causes
+        # an issue when saving the data to a .las file, as we want to cast the column to
+        # an unsigned integer type, which does not support NaNs.
+        merged_df['PredInstance'] = merged_df['PredInstance'].fillna(0)
+
         return merged_df
     
     def save(self, merged_df):
