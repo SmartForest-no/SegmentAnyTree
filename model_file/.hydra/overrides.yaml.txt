@@ -1,9 +1,0 @@
-- task=panoptic
-- data=panoptic/treeins_rad8
-- models=panoptic/area4_ablation_3heads_5
-- model_name=PointGroup-PAPER
-- training=treeins
-- job_name=mls_data_run
-- data.dataroot=/home/datascience/tmp_out_folder/utm2local
-- batch_size=6
-- epochs=100
