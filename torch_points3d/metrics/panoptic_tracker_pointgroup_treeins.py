@@ -450,7 +450,7 @@ class PanopticTracker(SegmentationTracker):
                     # print(len(new_has_old_idx))
                     # print(len(new_not_old_idx))
                     if len(new_has_old_idx) == 0:
-                        all_pre_ins[new_not_old_idx] = max_instance + 1
+                        all_pre_ins[new_not_old_idx] = max_instance
                         max_instance = max_instance + 1
                     elif len(new_not_old_idx) == 0:
                         continue
@@ -474,7 +474,7 @@ class PanopticTracker(SegmentationTracker):
                         if max_iou_ii > 0.1:  # th_merge:
                             all_pre_ins[new_not_old_idx] = max_iou_ii_oldlabel
                         else:
-                            all_pre_ins[new_not_old_idx] = max_instance + 1
+                            all_pre_ins[new_not_old_idx] = max_instance
                             max_instance = max_instance + 1
         return torch.from_numpy(all_pre_ins), max_instance
 
