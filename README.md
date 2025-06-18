@@ -12,6 +12,7 @@ The code has been tested on a Linux machine and it relies on a docker image. The
 ### Using the docker image
 
 A pre-built docker image can be pulled from [here](https://hub.docker.com/repository/docker/donaldmaen/segment-any-tree/general)
+
 You can also download the docker image : `docker pull maciekwielgosz/segment-any-tree:latest`
 
 In order to run code using docker container you should edit the content of `run_docker_locally.sh` file.  You should change the following lines:
