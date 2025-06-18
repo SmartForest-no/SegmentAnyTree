@@ -15,6 +15,8 @@ A pre-built docker image can be pulled from [here](https://hub.docker.com/reposi
 
 You can also download the docker image : `docker pull maciekwielgosz/segment-any-tree:latest`
 
+There is also image for cuda 11.8.0 available : `docker pull maciekwielgosz/segment-any-tree-cuda11.8.0` . This one is not well tested.
+
 In order to run code using docker container you should edit the content of `run_docker_locally.sh` file.  You should change the following lines:
 ```
 docker run -it --gpus all \
