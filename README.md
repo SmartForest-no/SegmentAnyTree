@@ -10,6 +10,29 @@ Under the hood, SegmentAnyTree relies on the [torch-points3d framework](https://
 The code has been tested on a Linux machine and it relies on a docker image. The method has not been tested in a Windows environment and parts of the code (e.g. Minkowski Engine) might not be available for Windows.
 
 ### Using the docker image
+There is a quick start for all who want to quickly process the data.
+
+### Quick start
+1. Create the necessary folders
+2. Upload your files to the folders
+3. Pull docker image
+4. Run the SaT model
+5. Check the results in the output folder
+
+```
+mkdir -p $HOME/segmentanytree/input
+mkdir -p $HOME/segmentanytree/output
+
+docker pull maciekwielgosz/segment-any-tree:latest
+
+docker run -it --rm --gpus all \
+  --mount type=bind,source=$HOME/segmentanytree/input,target=/home/nibio/mutable-outside-world/bucket_in_folder \
+  --mount type=bind,source=$HOME/segmentanytree/output,target=/home/nibio/mutable-outside-world/bucket_out_folder \
+  maciekwielgosz/segment-any-tree:latest
+
+```
+
+### Additional information
 
 A pre-built docker image can be pulled from [here](https://hub.docker.com/repository/docker/donaldmaen/segment-any-tree/general)
 
